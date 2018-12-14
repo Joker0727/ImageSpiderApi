@@ -15,7 +15,7 @@ namespace ImageSpiderApi.Controllers
     /// <summary>
     /// ImageSpiderApi
     /// </summary>
-    [RoutePrefix("imagespiderapi")]
+    [RoutePrefix("api/imagespiderapi")]
     public class CatalogController : ApiController
     {
         private ImageSpiderEntities ise = null;
@@ -63,6 +63,43 @@ namespace ImageSpiderApi.Controllers
                 return BadRequest("查询错误：" + ex.ToString());
             }
             return Ok(catalogList);
+        }
+        /// <summary>
+        /// 获取指定目录下的图片
+        /// </summary>
+        /// <param name="catalogId"></param>
+        /// <returns></returns>
+        [HttpPost, Route("getimage"), ResponseType(typeof(GetImageDto))]
+        public async Task<IHttpActionResult> GetImage(int catalogId)
+        {
+            if (catalogId < 0)
+                return BadRequest("目录Id不合法");
+            List<GetImageDto> ImageList = new List<GetImageDto>();
+            try
+            {
+
+                ImageList = await ise.ImageTables.Where(w => w.CatalogId == catalogId)
+                    .OrderBy(o => o.Id)
+                    .Select(s => new GetImageDto
+                    {
+                        Id = s.Id,
+                        Guid = s.Guid,
+                        Alt = s.Alt,
+                        OriginalUrl = s.OriginalUrl,
+                        NewUrl = s.NewUrl,
+                        Width = s.Width,
+                        Height = s.Height,
+                        CatalogId = s.CatalogId,
+                        WebSiteUrl = s.WebSiteUrl,
+                        IsDownLoad = s.IsDownLoad,
+                        DownLoadTime = s.DownLoadTime
+                    }).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("获取图片信息失败：" + ex.ToString());
+            }
+            return Ok(ImageList);
         }
     }
 }

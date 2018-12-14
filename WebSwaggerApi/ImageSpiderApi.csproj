@@ -248,6 +248,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\GetCatalogDto.cs" />
+    <Compile Include="Models\GetImageDto.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyToolHelper\ToolHelper.cs" />
