@@ -218,8 +218,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="EF\Account.cs">
+      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\CatalogTable.cs">
       <DependentUpon>ImageSpiderModel.tt</DependentUpon>
     </Compile>
@@ -249,7 +253,11 @@
     </Compile>
     <Compile Include="Models\GetCatalogDto.cs" />
     <Compile Include="Models\GetImageDto.cs" />
+    <Compile Include="Models\GetWxValidateDto.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\WxResponseUserInfo.cs" />
+    <Compile Include="Models\WxValidateUserResponse.cs" />
+    <Compile Include="MyToolHelper\GetWXUsersHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyToolHelper\ToolHelper.cs" />
   </ItemGroup>
