@@ -221,6 +221,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="EF\AccessRecord.cs">
+      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\Account.cs">
       <DependentUpon>ImageSpiderModel.tt</DependentUpon>
     </Compile>

@@ -12,19 +12,10 @@ namespace ImageSpiderApi.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Account
+    public partial class AccessRecord
     {
         public int Id { get; set; }
         public string OpenId { get; set; }
-        public string UnionId { get; set; }
-        public string NickName { get; set; }
-        public Nullable<bool> Gender { get; set; }
-        public string Country { get; set; }
-        public string Province { get; set; }
-        public string City { get; set; }
-        public string Language { get; set; }
-        public string AvatarUrl { get; set; }
-        public Nullable<System.DateTime> LatestLoginTime { get; set; }
-        public Nullable<System.DateTime> RegistrationTime { get; set; }
+        public Nullable<System.DateTime> AccessTime { get; set; }
     }
 }

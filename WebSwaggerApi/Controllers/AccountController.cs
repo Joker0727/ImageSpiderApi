@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -29,61 +30,102 @@ namespace ImageSpiderApi.Controllers
             ise = new ImageSpiderEntities();
         }
         /// <summary>
-        /// 获取微信小程序授权信息
+        /// 获取微信小程序的授权信息，并且判断登陆状态
         /// </summary>
         /// <param name="code"></param>
+        /// <param name="encryptedData"></param>
+        /// <param name="iv"></param>
         /// <returns></returns>
         [HttpGet, Route("getwxvalidate"), ResponseType(typeof(WxResponseUserInfo))]
         public async Task<IHttpActionResult> GetWxValidate(string code, string encryptedData, string iv)
         {
-            StringBuilder urlStr = new StringBuilder();
-            urlStr.AppendFormat(@"https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}"
-                    + "&grant_type=authorization_code",
-                    ConfigurationManager.AppSettings["XCXAppID"].ToString(),
-                    ConfigurationManager.AppSettings["XCXAppSecrect"].ToString(),
-                    code
-                );
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlStr.ToString());
-            request.Method = "GET";
-            request.ContentType = "text/html;charset=UTF-8";
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream myResponseStream = response.GetResponseStream();
-            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-            string retString = myStreamReader.ReadToEnd();
-            myStreamReader.Close();
-            myResponseStream.Close();
-            WxValidateUserResponse vdModel = Newtonsoft.Json.JsonConvert.DeserializeObject<WxValidateUserResponse>(retString);
             WxResponseUserInfo responseData = null;
-            if (vdModel != null)
+            try
             {
-                GetWXUsersHelper.AesIV = iv;
-                GetWXUsersHelper.AesKey = vdModel.session_key;
-                string result = new GetWXUsersHelper().AESDecrypt(encryptedData);
-                JObject _usrInfo = (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(result);
-                responseData = new WxResponseUserInfo
+                StringBuilder urlStr = new StringBuilder();
+                urlStr.AppendFormat(@"https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}"
+                        + "&grant_type=authorization_code",
+                        ConfigurationManager.AppSettings["XCXAppID"].ToString(),
+                        ConfigurationManager.AppSettings["XCXAppSecrect"].ToString(),
+                        code
+                    );
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlStr.ToString());
+                request.Method = "GET";
+                request.ContentType = "text/html;charset=UTF-8";
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream myResponseStream = response.GetResponseStream();
+                StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
+                string retString = myStreamReader.ReadToEnd();
+                myStreamReader.Close();
+                myResponseStream.Close();
+                WxValidateUserResponse vdModel = Newtonsoft.Json.JsonConvert.DeserializeObject<WxValidateUserResponse>(retString);
+                if (vdModel != null)
                 {
-                    nickName = _usrInfo["nickName"].ToString(),
-                    gender = _usrInfo["gender"].ToString(),
-                    city = _usrInfo["city"].ToString(),
-                    province = _usrInfo["province"].ToString(),
-                    country = _usrInfo["country"].ToString(),
-                    avatarUrl = _usrInfo["avatarUrl"].ToString(),
-                    sessionKey = vdModel.session_key
-                };
-                responseData.openId = _usrInfo["openId"].ToString();
-                try
-                {
-                    responseData.unionId = _usrInfo["unionId"].ToString();
+                    GetWXUsersHelper.AesIV = iv;
+                    GetWXUsersHelper.AesKey = vdModel.session_key;
+                    string result = new GetWXUsersHelper().AESDecrypt(encryptedData);
+                    JObject _usrInfo = (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(result);
+                    responseData = new WxResponseUserInfo
+                    {
+                        nickName = _usrInfo["nickName"].ToString(),
+                        gender = _usrInfo["gender"].ToString(),
+                        city = _usrInfo["city"].ToString(),
+                        province = _usrInfo["province"].ToString(),
+                        country = _usrInfo["country"].ToString(),
+                        avatarUrl = _usrInfo["avatarUrl"].ToString(),
+                        sessionKey = vdModel.session_key
+                    };
+                    responseData.openId = _usrInfo["openId"].ToString();
+                    try
+                    {
+                        responseData.unionId = _usrInfo["unionId"]?.ToString();
+                    }
+                    catch (Exception)
+                    {
+                        responseData.unionId = "null";
+                    }
+
+                    string openId = responseData?.openId;
+                    var resAccObj = await ise.Accounts.Where(w => w.OpenId == openId).FirstOrDefaultAsync();
+                    DateTime currentTime = DateTime.Now;
+                    if (resAccObj == null)
+                    {
+                        Account newAccObj = new Account();
+                        newAccObj.OpenId = openId;
+                        newAccObj.UnionId = responseData.unionId;
+                        newAccObj.NickName = responseData.nickName;
+                        newAccObj.Gender = Convert.ToBoolean(responseData.gender);
+                        newAccObj.Country = responseData.country;
+                        newAccObj.Province = responseData.province;
+                        newAccObj.City = responseData.city;
+                        newAccObj.AvatarUrl = responseData.avatarUrl;
+                        newAccObj.RegistrationTime = currentTime;
+                        newAccObj.LatestLoginTime = currentTime;
+                        ise.Accounts.Add(newAccObj);
+                        await ise.SaveChangesAsync();
+                        AccessRecord accessRecord = new AccessRecord();
+                        accessRecord.OpenId = newAccObj.OpenId;
+                        accessRecord.AccessTime = currentTime;
+                        ise.AccessRecords.Add(accessRecord);
+                        await ise.SaveChangesAsync();
+
+                    }
+                    else
+                    {
+                        resAccObj.LatestLoginTime = currentTime;
+                        ise.Accounts.Add(resAccObj);
+                        await ise.SaveChangesAsync();
+                    }
+                    return Ok(responseData);
                 }
-                catch (Exception)
+                else
                 {
-                    responseData.unionId = "null";
+                    return Ok(responseData);
                 }
-                return Ok(responseData);
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(responseData);
+                return BadRequest(ex.Message);
             }
         }
     }

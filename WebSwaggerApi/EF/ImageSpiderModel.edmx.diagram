@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="ImageSpiderModel.ImageTable" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="ImageSpiderModel.CatalogId_ForeignKey" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ImageSpiderModel.Account" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ImageSpiderModel.AccessRecord" Width="1.5" PointX="7.625" PointY="1.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

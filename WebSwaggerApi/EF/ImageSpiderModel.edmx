@@ -5,13 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ImageSpiderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccessRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OpenId" Type="varchar" MaxLength="255" />
+          <Property Name="AccessTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OpenId" Type="varchar" MaxLength="1" />
-          <Property Name="UnionId" Type="varchar" MaxLength="1" />
+          <Property Name="OpenId" Type="varchar" MaxLength="255" />
+          <Property Name="UnionId" Type="varchar" MaxLength="255" />
           <Property Name="NickName" Type="varchar" MaxLength="255" />
           <Property Name="Gender" Type="bit" />
           <Property Name="Country" Type="varchar" MaxLength="100" />
@@ -19,6 +27,7 @@
           <Property Name="City" Type="varchar" MaxLength="100" />
           <Property Name="Language" Type="varchar" MaxLength="100" />
           <Property Name="AvatarUrl" Type="varchar" MaxLength="255" />
+          <Property Name="RegistrationTime" Type="datetime" />
           <Property Name="LatestLoginTime" Type="datetime" />
         </EntityType>
         <EntityType Name="CatalogTable">
@@ -61,6 +70,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ImageSpiderModelStoreContainer">
+          <EntitySet Name="AccessRecord" EntityType="Self.AccessRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogTable" EntityType="Self.CatalogTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageTable" EntityType="Self.ImageTable" Schema="dbo" store:Type="Tables" />
@@ -122,14 +132,15 @@
             <End Role="ImageTable" EntitySet="ImageTables" />
           </AssociationSet>
           <EntitySet Name="Accounts" EntityType="ImageSpiderModel.Account" />
+          <EntitySet Name="AccessRecords" EntityType="ImageSpiderModel.AccessRecord" />
         </EntityContainer>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OpenId" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="UnionId" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="OpenId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UnionId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="NickName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Gender" Type="Boolean" />
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -138,6 +149,15 @@
           <Property Name="Language" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="AvatarUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LatestLoginTime" Type="DateTime" Precision="3" />
+          <Property Name="RegistrationTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AccessRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OpenId" Type="String" />
+          <Property Name="AccessTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -177,6 +197,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="ImageSpiderModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="RegistrationTime" ColumnName="RegistrationTime" />
                 <ScalarProperty Name="LatestLoginTime" ColumnName="LatestLoginTime" />
                 <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
@@ -186,6 +207,15 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="UnionId" ColumnName="UnionId" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccessRecords">
+            <EntityTypeMapping TypeName="ImageSpiderModel.AccessRecord">
+              <MappingFragment StoreEntitySet="AccessRecord">
+                <ScalarProperty Name="AccessTime" ColumnName="AccessTime" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
