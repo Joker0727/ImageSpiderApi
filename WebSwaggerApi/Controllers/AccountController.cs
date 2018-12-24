@@ -128,5 +128,75 @@ namespace ImageSpiderApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// 新增收藏记录
+        /// </summary>
+        /// <param name="openId">用户的openId</param>
+        /// <param name="imageId">图片的Id</param>
+        /// <returns></returns>
+        [HttpGet, Route("addcollectionrecord"), ResponseType(typeof(Collection))]
+        public async Task<IHttpActionResult> AddCollectionRecord(string openId, int imageId)
+        {
+            string message = string.Empty;
+            AddCollectionRecordDto addCollectionRecordDto = null;
+            if (string.IsNullOrEmpty(openId) || imageId < -1)
+            {
+                message = "参数不合法！";
+                return BadRequest(message);
+            }
+            try
+            {
+                Collection collectionObj = new Collection
+                {
+                    OpenId = openId,
+                    ImageId = imageId,
+                    CollectionTime = DateTime.Now
+                };
+                ise.Collections.Add(collectionObj);
+                await ise.SaveChangesAsync();
+                addCollectionRecordDto = new AddCollectionRecordDto
+                {
+                    Id = collectionObj.Id,
+                    OpenId = collectionObj.OpenId,
+                    ImageId = collectionObj.ImageId,
+                    CollectionTime = collectionObj.CollectionTime
+                };
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return BadRequest(message);
+            }
+            return Ok(addCollectionRecordDto);
+        }
+        /// <summary>
+        /// 删除收藏的图片
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="imageId"></param>
+        /// <returns></returns>
+        [HttpGet, Route("deletecollectionrecord"), ResponseType(typeof(Collection))]
+        public async Task<IHttpActionResult> DeleteCollectionRecord(string openId, int imageId)
+        {
+            string message = string.Empty;
+            if (string.IsNullOrEmpty(openId) || imageId < -1)
+            {
+                message = "参数不合法！";
+                return BadRequest(message);
+            }
+            Collection collectionObj = null;
+            try
+            {
+                collectionObj = await ise.Collections.Where(w => w.OpenId == openId && w.ImageId == imageId).FirstOrDefaultAsync();
+                if (collectionObj != null)
+                    ise.Collections.Remove(collectionObj);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return BadRequest(message);
+            }
+            return Ok(collectionObj);
+        }
     }
 }

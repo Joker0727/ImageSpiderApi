@@ -29,5 +29,6 @@ namespace ImageSpiderApi.EF
         public virtual DbSet<ImageTable> ImageTables { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccessRecord> AccessRecords { get; set; }
+        public virtual DbSet<Collection> Collections { get; set; }
     }
 }

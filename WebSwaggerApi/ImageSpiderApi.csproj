@@ -230,6 +230,9 @@
     <Compile Include="EF\CatalogTable.cs">
       <DependentUpon>ImageSpiderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\Collection.cs">
+      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ImageSpiderModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -254,6 +257,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddCollectionRecordDto.cs" />
     <Compile Include="Models\GetCatalogDto.cs" />
     <Compile Include="Models\GetImageDto.cs" />
     <Compile Include="Models\GetWxValidateDto.cs" />

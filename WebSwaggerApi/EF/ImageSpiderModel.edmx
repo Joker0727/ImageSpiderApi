@@ -10,7 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OpenId" Type="varchar" MaxLength="255" />
+          <Property Name="OpenId" Type="varchar" MaxLength="100" />
           <Property Name="AccessTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Account">
@@ -22,10 +22,9 @@
           <Property Name="UnionId" Type="varchar" MaxLength="255" />
           <Property Name="NickName" Type="varchar" MaxLength="255" />
           <Property Name="Gender" Type="bit" />
-          <Property Name="Country" Type="varchar" MaxLength="100" />
-          <Property Name="Province" Type="varchar" MaxLength="100" />
-          <Property Name="City" Type="varchar" MaxLength="100" />
-          <Property Name="Language" Type="varchar" MaxLength="100" />
+          <Property Name="Country" Type="varchar" MaxLength="255" />
+          <Property Name="Province" Type="varchar" MaxLength="255" />
+          <Property Name="City" Type="varchar" MaxLength="255" />
           <Property Name="AvatarUrl" Type="varchar" MaxLength="255" />
           <Property Name="RegistrationTime" Type="datetime" />
           <Property Name="LatestLoginTime" Type="datetime" />
@@ -40,6 +39,15 @@
           <Property Name="Describe" Type="varchar" MaxLength="255" />
           <Property Name="TotalImages" Type="int" />
           <Property Name="IsDownLoad" Type="bit" />
+        </EntityType>
+        <EntityType Name="Collection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OpenId" Type="varchar" MaxLength="255" />
+          <Property Name="ImageId" Type="int" />
+          <Property Name="CollectionTime" Type="datetime" />
         </EntityType>
         <EntityType Name="ImageTable">
           <Key>
@@ -69,14 +77,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Fk_ImageId">
+          <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="0..1" />
+          <End Role="Collection" Type="Self.Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImageTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collection">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ImageSpiderModelStoreContainer">
           <EntitySet Name="AccessRecord" EntityType="Self.AccessRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogTable" EntityType="Self.CatalogTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Collection" EntityType="Self.Collection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageTable" EntityType="Self.ImageTable" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="CatalogId_ForeignKey" Association="Self.CatalogId_ForeignKey">
             <End Role="CatalogTable" EntitySet="CatalogTable" />
             <End Role="ImageTable" EntitySet="ImageTable" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_ImageId" Association="Self.Fk_ImageId">
+            <End Role="ImageTable" EntitySet="ImageTable" />
+            <End Role="Collection" EntitySet="Collection" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -111,6 +136,7 @@
           <Property Name="IsDownLoad" Type="Boolean" />
           <Property Name="DownLoadTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CatalogTable" Relationship="Self.CatalogId_ForeignKey" FromRole="ImageTable" ToRole="CatalogTable" />
+          <NavigationProperty Name="Collections" Relationship="ImageSpiderModel.Fk_ImageId" FromRole="ImageTable" ToRole="Collection" />
         </EntityType>
         <Association Name="CatalogId_ForeignKey">
           <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="1" />
@@ -133,6 +159,11 @@
           </AssociationSet>
           <EntitySet Name="Accounts" EntityType="ImageSpiderModel.Account" />
           <EntitySet Name="AccessRecords" EntityType="ImageSpiderModel.AccessRecord" />
+          <EntitySet Name="Collections" EntityType="ImageSpiderModel.Collection" />
+          <AssociationSet Name="Fk_ImageId" Association="ImageSpiderModel.Fk_ImageId">
+            <End Role="ImageTable" EntitySet="ImageTables" />
+            <End Role="Collection" EntitySet="Collections" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Account">
           <Key>
@@ -143,10 +174,9 @@
           <Property Name="UnionId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="NickName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Gender" Type="Boolean" />
-          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Province" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Language" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="AvatarUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LatestLoginTime" Type="DateTime" Precision="3" />
           <Property Name="RegistrationTime" Type="DateTime" Precision="3" />
@@ -156,9 +186,31 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OpenId" Type="String" />
+          <Property Name="OpenId" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="AccessTime" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Collection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OpenId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ImageId" Type="Int32" />
+          <NavigationProperty Name="ImageTable" Relationship="ImageSpiderModel.Fk_ImageId" FromRole="Collection" ToRole="ImageTable" />
+          <Property Name="CollectionTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="Fk_ImageId">
+          <End Type="ImageSpiderModel.ImageTable" Role="ImageTable" Multiplicity="0..1" />
+          <End Type="ImageSpiderModel.Collection" Role="Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImageTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collection">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -200,7 +252,6 @@
                 <ScalarProperty Name="RegistrationTime" ColumnName="RegistrationTime" />
                 <ScalarProperty Name="LatestLoginTime" ColumnName="LatestLoginTime" />
                 <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
-                <ScalarProperty Name="Language" ColumnName="Language" />
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="Province" ColumnName="Province" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
@@ -216,6 +267,16 @@
             <EntityTypeMapping TypeName="ImageSpiderModel.AccessRecord">
               <MappingFragment StoreEntitySet="AccessRecord">
                 <ScalarProperty Name="AccessTime" ColumnName="AccessTime" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Collections">
+            <EntityTypeMapping TypeName="ImageSpiderModel.Collection">
+              <MappingFragment StoreEntitySet="Collection">
+                <ScalarProperty Name="CollectionTime" ColumnName="CollectionTime" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
