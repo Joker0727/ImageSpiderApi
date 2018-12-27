@@ -105,30 +105,48 @@ namespace ImageSpiderApi.Controllers
         /// 随机获取一张图片
         /// </summary>
         /// <returns></returns>
-        [HttpGet, Route("getrandompicture"), ResponseType(typeof(GetRandomPictureDto))]
+        [HttpGet, Route("getrandompicture"), ResponseType(typeof(string))]
         public async Task<IHttpActionResult> GetRandomPicture()
         {
             List<ImageTable> imageList = await ise.ImageTables.OrderBy(a => Guid.NewGuid()).Take(1).ToListAsync();
-            GetRandomPictureDto getRandomPictureDto = null;
+            string resultStr = string.Empty;
+            //GetRandomPictureDto getRandomPictureDto = null;
+            //if (imageList.Count > 0)
+            //{
+            //    ImageTable imageTable = imageList[0];
+            //    getRandomPictureDto = new GetRandomPictureDto
+            //    {
+            //        Id = imageTable.Id,
+            //        Guid = imageTable.Guid,
+            //        Alt = imageTable.Guid,
+            //        OriginalUrl = imageTable.OriginalUrl,
+            //        NewUrl = imageTable.NewUrl,
+            //        Width = imageTable.Width,
+            //        Height = imageTable.Height,
+            //        CatalogId = imageTable.CatalogId,
+            //        WebSiteUrl = imageTable.WebSiteUrl,
+            //        IsDownLoad = imageTable.IsDownLoad,
+            //        DownLoadTime = imageTable.DownLoadTime
+            //    };
+            //}
             if (imageList.Count > 0)
+                resultStr = imageList[0].NewUrl;
+            return Ok(resultStr);
+        }
+
+        [HttpGet, Route("UpData"), ResponseType(typeof(bool))]
+        public async Task<IHttpActionResult> UpData()
+        {
+            List<ImageTable> imageList = await ise.ImageTables.Where(w => w.NewUrl.StartsWith(@"C:\")).ToListAsync();
+            string resultStr = string.Empty;
+            foreach (var item in imageList)
             {
-                ImageTable imageTable = imageList[0];
-                getRandomPictureDto = new GetRandomPictureDto
-                {
-                    Id = imageTable.Id,
-                    Guid = imageTable.Guid,
-                    Alt = imageTable.Guid,
-                    OriginalUrl = imageTable.OriginalUrl,
-                    NewUrl = imageTable.NewUrl,
-                    Width = imageTable.Width,
-                    Height = imageTable.Height,
-                    CatalogId = imageTable.CatalogId,
-                    WebSiteUrl = imageTable.WebSiteUrl,
-                    IsDownLoad = imageTable.IsDownLoad,
-                    DownLoadTime = imageTable.DownLoadTime
-                };
+                item.NewUrl = "http://54188.xyz/images/" + item.Guid + ".jpg";
+
+                ise.ImageTables.Add(item);
+                ise.SaveChanges();
             }
-            return Ok(getRandomPictureDto);
+            return Ok(true);
         }
     }
 }

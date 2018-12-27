@@ -94,7 +94,7 @@ namespace ImageSpiderApi.Controllers
                         newAccObj.OpenId = openId;
                         newAccObj.UnionId = responseData.unionId;
                         newAccObj.NickName = responseData.nickName;
-                        newAccObj.Gender = Convert.ToBoolean(responseData.gender);
+                        newAccObj.Gender = Convert.ToInt32(responseData.gender) == 1 ? true : false;
                         newAccObj.Country = responseData.country;
                         newAccObj.Province = responseData.province;
                         newAccObj.City = responseData.city;

@@ -65,18 +65,6 @@
           <Property Name="IsDownLoad" Type="bit" />
           <Property Name="DownLoadTime" Type="datetime" />
         </EntityType>
-        <Association Name="CatalogId_ForeignKey">
-          <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="1" />
-          <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CatalogTable">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ImageTable">
-              <PropertyRef Name="CatalogId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Fk_ImageId">
           <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="0..1" />
           <End Role="Collection" Type="Self.Collection" Multiplicity="*" />
@@ -95,10 +83,6 @@
           <EntitySet Name="CatalogTable" EntityType="Self.CatalogTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Collection" EntityType="Self.Collection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageTable" EntityType="Self.ImageTable" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="CatalogId_ForeignKey" Association="Self.CatalogId_ForeignKey">
-            <End Role="CatalogTable" EntitySet="CatalogTable" />
-            <End Role="ImageTable" EntitySet="ImageTable" />
-          </AssociationSet>
           <AssociationSet Name="Fk_ImageId" Association="Self.Fk_ImageId">
             <End Role="ImageTable" EntitySet="ImageTable" />
             <End Role="Collection" EntitySet="Collection" />
