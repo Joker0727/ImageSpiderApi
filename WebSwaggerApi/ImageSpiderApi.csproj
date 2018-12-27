@@ -260,6 +260,7 @@
     <Compile Include="Models\AddCollectionRecordDto.cs" />
     <Compile Include="Models\GetCatalogDto.cs" />
     <Compile Include="Models\GetImageDto.cs" />
+    <Compile Include="Models\GetRandomPictureDto.cs" />
     <Compile Include="Models\GetWxValidateDto.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\WxResponseUserInfo.cs" />
