@@ -134,19 +134,5 @@ namespace ImageSpiderApi.Controllers
             return Ok(resultStr);
         }
 
-        [HttpGet, Route("UpData"), ResponseType(typeof(bool))]
-        public async Task<IHttpActionResult> UpData()
-        {
-            List<ImageTable> imageList = await ise.ImageTables.Where(w => w.NewUrl.StartsWith(@"C:\")).ToListAsync();
-            string resultStr = string.Empty;
-            foreach (var item in imageList)
-            {
-                item.NewUrl = "http://54188.xyz/images/" + item.Guid + ".jpg";
-
-                ise.ImageTables.Add(item);
-                ise.SaveChanges();
-            }
-            return Ok(true);
-        }
     }
 }
