@@ -105,13 +105,30 @@ namespace ImageSpiderApi.Controllers
         /// 随机获取一张图片
         /// </summary>
         /// <returns></returns>
-        [HttpGet, Route("getrandompicture"), ResponseType(typeof(ImageTable))]
+        [HttpGet, Route("getrandompicture"), ResponseType(typeof(GetRandomPictureDto))]
         public async Task<IHttpActionResult> GetRandomPicture()
         {
             List<ImageTable> imageList = await ise.ImageTables.OrderBy(a => Guid.NewGuid()).Take(1).ToListAsync();
+            GetRandomPictureDto getRandomPictureDto = null;
             if (imageList.Count > 0)
-                return Ok(imageList[0]);
-            return null;
+            {
+                ImageTable imageTable = imageList[0];
+                getRandomPictureDto = new GetRandomPictureDto
+                {
+                    Id = imageTable.Id,
+                    Guid = imageTable.Guid,
+                    Alt = imageTable.Guid,
+                    OriginalUrl = imageTable.OriginalUrl,
+                    NewUrl = imageTable.NewUrl,
+                    Width = imageTable.Width,
+                    Height = imageTable.Height,
+                    CatalogId = imageTable.CatalogId,
+                    WebSiteUrl = imageTable.WebSiteUrl,
+                    IsDownLoad = imageTable.IsDownLoad,
+                    DownLoadTime = imageTable.DownLoadTime
+                };
+            }
+            return Ok(getRandomPictureDto);
         }
     }
 }
