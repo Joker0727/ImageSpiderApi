@@ -113,7 +113,6 @@ namespace ImageSpiderApi.Controllers
                     else
                     {
                         resAccObj.LatestLoginTime = currentTime;
-                        ise.Accounts.Add(resAccObj);
                         await ise.SaveChangesAsync();
                     }
                     return Ok(responseData);
