@@ -101,5 +101,17 @@ namespace ImageSpiderApi.Controllers
             }
             return Ok(ImageList);
         }
+        /// <summary>
+        /// 随机获取一张图片
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("getrandompicture"), ResponseType(typeof(ImageTable))]
+        public async Task<IHttpActionResult> GetRandomPicture()
+        {
+            List<ImageTable> imageList = await ise.ImageTables.OrderBy(a => Guid.NewGuid()).Take(1).ToListAsync();
+            if (imageList.Count > 0)
+                return Ok(imageList[0]);
+            return null;
+        }
     }
 }
