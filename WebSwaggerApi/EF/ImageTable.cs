@@ -17,7 +17,7 @@ namespace ImageSpiderApi.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ImageTable()
         {
-            this.Collections = new HashSet<Collection>();
+            this.CollectionTables = new HashSet<CollectionTable>();
         }
     
         public int Id { get; set; }
@@ -27,13 +27,13 @@ namespace ImageSpiderApi.EF
         public string NewUrl { get; set; }
         public Nullable<double> Width { get; set; }
         public Nullable<double> Height { get; set; }
-        public int CatalogId { get; set; }
+        public Nullable<int> CatalogId { get; set; }
         public string WebSiteUrl { get; set; }
         public Nullable<bool> IsDownLoad { get; set; }
         public Nullable<System.DateTime> DownLoadTime { get; set; }
     
         public virtual CatalogTable CatalogTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Collection> Collections { get; set; }
+        public virtual ICollection<CollectionTable> CollectionTables { get; set; }
     }
 }

@@ -173,15 +173,15 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="EF\ImageSpiderModel.Context.tt">
+    <Content Include="EF\ImageSpider.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ImageSpiderModel.Context.cs</LastGenOutput>
-      <DependentUpon>ImageSpiderModel.edmx</DependentUpon>
+      <DependentUpon>ImageSpider.edmx</DependentUpon>
+      <LastGenOutput>ImageSpider.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="EF\ImageSpiderModel.tt">
+    <Content Include="EF\ImageSpider.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ImageSpiderModel.edmx</DependentUpon>
-      <LastGenOutput>ImageSpiderModel.cs</LastGenOutput>
+      <DependentUpon>ImageSpider.edmx</DependentUpon>
+      <LastGenOutput>ImageSpider.cs</LastGenOutput>
     </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -191,12 +191,12 @@
     <EmbeddedResource Include="scripts\Swagger\Swagger_lang.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
-    <EntityDeploy Include="EF\ImageSpiderModel.edmx">
+    <EntityDeploy Include="EF\ImageSpider.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ImageSpiderModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ImageSpider.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="EF\ImageSpiderModel.edmx.diagram">
-      <DependentUpon>ImageSpiderModel.edmx</DependentUpon>
+    <Content Include="EF\ImageSpider.edmx.diagram">
+      <DependentUpon>ImageSpider.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Swagger.pubxml" />
@@ -222,34 +222,34 @@
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="EF\AccessRecord.cs">
-      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+      <DependentUpon>ImageSpider.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\Account.cs">
-      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+      <DependentUpon>ImageSpider.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\CatalogTable.cs">
-      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+      <DependentUpon>ImageSpider.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Collection.cs">
-      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+    <Compile Include="EF\CollectionTable.cs">
+      <DependentUpon>ImageSpider.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\ImageSpiderModel.Context.cs">
+    <Compile Include="EF\ImageSpider.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ImageSpiderModel.Context.tt</DependentUpon>
+      <DependentUpon>ImageSpider.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\ImageSpiderModel.cs">
+    <Compile Include="EF\ImageSpider.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+      <DependentUpon>ImageSpider.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\ImageSpiderModel.Designer.cs">
+    <Compile Include="EF\ImageSpider.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ImageSpiderModel.edmx</DependentUpon>
+      <DependentUpon>ImageSpider.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\ImageTable.cs">
-      <DependentUpon>ImageSpiderModel.tt</DependentUpon>
+      <DependentUpon>ImageSpider.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums\TypeEnums.cs" />
     <Compile Include="Filter\HttpHeaderFilter.cs" />

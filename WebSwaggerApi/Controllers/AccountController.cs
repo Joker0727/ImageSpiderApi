@@ -121,6 +121,7 @@ namespace ImageSpiderApi.Controllers
                         ise.AccessRecords.Add(accessRecord);
                         await ise.SaveChangesAsync();
                     }
+                    responseData.AccessRecordId = accessRecord.Id;
                     return Ok(responseData);
                 }
                 else
@@ -134,35 +135,47 @@ namespace ImageSpiderApi.Controllers
             }
         }
         /// <summary>
+        /// 更新离开时间
+        /// </summary>
+        /// <param name="accessRecordId"></param>
+        /// <returns></returns>
+        public async Task UpDataExitTime(int accessRecordId)
+        {
+            AccessRecord accessRecord =await ise.AccessRecords.Where(w => w.Id == accessRecordId).FirstOrDefaultAsync();
+            accessRecord.ExitTime = DateTime.Now;
+            accessRecord.StayTime = 1;
+            await ise.SaveChangesAsync();
+        }
+        /// <summary>
         /// 新增收藏记录
         /// </summary>
-        /// <param name="openId">用户的openId</param>
+        /// <param name="accountId">用户的accountId</param>
         /// <param name="imageId">图片的Id</param>
         /// <returns></returns>
-        [HttpGet, Route("addcollectionrecord"), ResponseType(typeof(Collection))]
-        public async Task<IHttpActionResult> AddCollectionRecord(string openId, int imageId)
+        [HttpGet, Route("addcollectionrecord"), ResponseType(typeof(CollectionTable))]
+        public async Task<IHttpActionResult> AddCollectionRecord(int accountId, int imageId)
         {
             string message = string.Empty;
             AddCollectionRecordDto addCollectionRecordDto = null;
-            if (string.IsNullOrEmpty(openId) || imageId < -1)
+            if (accountId * imageId < 0)
             {
                 message = "参数不合法！";
                 return BadRequest(message);
             }
             try
             {
-                Collection collectionObj = new Collection
+                CollectionTable collectionObj = new CollectionTable
                 {
-                    OpenId = openId,
+                    AccountId = accountId,
                     ImageId = imageId,
                     CollectionTime = DateTime.Now
                 };
-                ise.Collections.Add(collectionObj);
+                ise.CollectionTables.Add(collectionObj);
                 await ise.SaveChangesAsync();
                 addCollectionRecordDto = new AddCollectionRecordDto
                 {
                     Id = collectionObj.Id,
-                    OpenId = collectionObj.OpenId,
+                    AccountId = collectionObj.AccountId,
                     ImageId = collectionObj.ImageId,
                     CollectionTime = collectionObj.CollectionTime
                 };
@@ -177,24 +190,24 @@ namespace ImageSpiderApi.Controllers
         /// <summary>
         /// 删除收藏的图片
         /// </summary>
-        /// <param name="openId"></param>
-        /// <param name="imageId"></param>
+        /// <param name="accountId">用户的accountId</param>
+        /// <param name="imageId">图片的Id</param>
         /// <returns></returns>
-        [HttpGet, Route("deletecollectionrecord"), ResponseType(typeof(Collection))]
-        public async Task<IHttpActionResult> DeleteCollectionRecord(string openId, int imageId)
+        [HttpGet, Route("deletecollectionrecord"), ResponseType(typeof(CollectionTable))]
+        public async Task<IHttpActionResult> DeleteCollectionRecord(int accountId, int imageId)
         {
             string message = string.Empty;
-            if (string.IsNullOrEmpty(openId) || imageId < -1)
+            if (accountId * imageId < 0)
             {
                 message = "参数不合法！";
                 return BadRequest(message);
             }
-            Collection collectionObj = null;
+            CollectionTable collectionObj = null;
             try
             {
-                collectionObj = await ise.Collections.Where(w => w.OpenId == openId && w.ImageId == imageId).FirstOrDefaultAsync();
+                collectionObj = await ise.CollectionTables.Where(w => w.AccountId == accountId && w.ImageId == imageId).FirstOrDefaultAsync();
                 if (collectionObj != null)
-                    ise.Collections.Remove(collectionObj);
+                    ise.CollectionTables.Remove(collectionObj);
             }
             catch (Exception ex)
             {

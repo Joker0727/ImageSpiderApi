@@ -42,6 +42,13 @@ namespace ImageSpiderApi.Models
         /// 头像Url
         /// </summary>
         public string avatarUrl { get; set; }
+        /// <summary>
+        /// sessionKey
+        /// </summary>
         public string sessionKey { get; set; }
+        /// <summary>
+        /// AccessRecordId
+        /// </summary>
+        public int AccessRecordId {get;set;}
     }
 }

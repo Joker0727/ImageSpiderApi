@@ -17,7 +17,7 @@ namespace ImageSpiderApi.Models
         /// <summary>
         /// 用户的OpenId
         /// </summary>
-        public string OpenId { get; set; }
+        public int? AccountId { get; set; }
         /// <summary>
         /// 图片的Id
         /// </summary>

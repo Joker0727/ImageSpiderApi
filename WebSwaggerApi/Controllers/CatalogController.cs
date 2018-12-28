@@ -67,10 +67,12 @@ namespace ImageSpiderApi.Controllers
         /// <summary>
         /// 获取指定目录下的图片
         /// </summary>
-        /// <param name="catalogId"></param>
+        /// <param name="catalogId">图片的目录Id</param>
+        /// <param name="page">页数</param>
+        /// <param name="count">每页图片数</param>
         /// <returns></returns>
         [HttpPost, Route("getimage"), ResponseType(typeof(GetImageDto))]
-        public async Task<IHttpActionResult> GetImage(int catalogId)
+        public async Task<IHttpActionResult> GetImage(int catalogId, int page, int count = 6)
         {
             if (catalogId < 0)
                 return BadRequest("目录Id不合法");
@@ -80,6 +82,8 @@ namespace ImageSpiderApi.Controllers
 
                 ImageList = await ise.ImageTables.Where(w => w.CatalogId == catalogId)
                     .OrderBy(o => o.Id)
+                    .Skip(count * (page - 1))
+                    .Take(count)
                     .Select(s => new GetImageDto
                     {
                         Id = s.Id,
@@ -110,25 +114,6 @@ namespace ImageSpiderApi.Controllers
         {
             List<ImageTable> imageList = await ise.ImageTables.OrderBy(a => Guid.NewGuid()).Take(1).ToListAsync();
             string resultStr = string.Empty;
-            //GetRandomPictureDto getRandomPictureDto = null;
-            //if (imageList.Count > 0)
-            //{
-            //    ImageTable imageTable = imageList[0];
-            //    getRandomPictureDto = new GetRandomPictureDto
-            //    {
-            //        Id = imageTable.Id,
-            //        Guid = imageTable.Guid,
-            //        Alt = imageTable.Guid,
-            //        OriginalUrl = imageTable.OriginalUrl,
-            //        NewUrl = imageTable.NewUrl,
-            //        Width = imageTable.Width,
-            //        Height = imageTable.Height,
-            //        CatalogId = imageTable.CatalogId,
-            //        WebSiteUrl = imageTable.WebSiteUrl,
-            //        IsDownLoad = imageTable.IsDownLoad,
-            //        DownLoadTime = imageTable.DownLoadTime
-            //    };
-            //}
             if (imageList.Count > 0)
                 resultStr = imageList[0].NewUrl;
             return Ok(resultStr);

@@ -16,7 +16,12 @@ namespace ImageSpiderApi.EF
     {
         public int Id { get; set; }
         public string OpenId { get; set; }
-        public Nullable<System.DateTime> AccessTime { get; set; }
         public string NickName { get; set; }
+        public Nullable<System.DateTime> AccessTime { get; set; }
+        public Nullable<System.DateTime> ExitTime { get; set; }
+        public Nullable<double> StayTime { get; set; }
+        public Nullable<int> AccountId { get; set; }
+    
+        public virtual Account Account { get; set; }
     }
 }

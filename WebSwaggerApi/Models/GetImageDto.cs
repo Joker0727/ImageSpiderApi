@@ -41,7 +41,7 @@ namespace ImageSpiderApi.Models
         /// <summary>
         /// 该图片所在目录的目录id
         /// </summary>
-        public int CatalogId { get; set; }
+        public int? CatalogId { get; set; }
         /// <summary>
         /// 来源网站
         /// </summary>

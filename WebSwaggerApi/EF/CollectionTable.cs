@@ -12,13 +12,14 @@ namespace ImageSpiderApi.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Collection
+    public partial class CollectionTable
     {
         public int Id { get; set; }
-        public string OpenId { get; set; }
+        public Nullable<int> AccountId { get; set; }
         public Nullable<int> ImageId { get; set; }
         public Nullable<System.DateTime> CollectionTime { get; set; }
     
+        public virtual Account Account { get; set; }
         public virtual ImageTable ImageTable { get; set; }
     }
 }
