@@ -139,12 +139,25 @@ namespace ImageSpiderApi.Controllers
         /// </summary>
         /// <param name="accessRecordId"></param>
         /// <returns></returns>
-        public async Task UpDataExitTime(int accessRecordId)
+        [HttpGet, Route("updataexittime"), ResponseType(typeof(AccessRecord))]
+        public async Task<IHttpActionResult> UpDataExitTime(int accessRecordId)
         {
-            AccessRecord accessRecord =await ise.AccessRecords.Where(w => w.Id == accessRecordId).FirstOrDefaultAsync();
-            accessRecord.ExitTime = DateTime.Now;
-            accessRecord.StayTime = 1;
-            await ise.SaveChangesAsync();
+            AccessRecord accessRecord = null;
+            try
+            {
+                accessRecord = await ise.AccessRecords.Where(w => w.Id == accessRecordId).FirstOrDefaultAsync();
+                accessRecord.ExitTime = DateTime.Now;
+                TimeSpan ts1 = new TimeSpan(((DateTime)accessRecord.AccessTime).Ticks);
+                TimeSpan ts2 = new TimeSpan(((DateTime)accessRecord.ExitTime).Ticks);
+                TimeSpan ts = ts1.Subtract(ts2).Duration();
+                accessRecord.StayTime = ts.TotalMinutes;
+                await ise.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(accessRecord);
         }
         /// <summary>
         /// 新增收藏记录
