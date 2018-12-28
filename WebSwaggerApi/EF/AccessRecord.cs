@@ -17,5 +17,6 @@ namespace ImageSpiderApi.EF
         public int Id { get; set; }
         public string OpenId { get; set; }
         public Nullable<System.DateTime> AccessTime { get; set; }
+        public string NickName { get; set; }
     }
 }

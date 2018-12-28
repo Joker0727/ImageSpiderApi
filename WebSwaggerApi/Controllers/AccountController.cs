@@ -88,9 +88,11 @@ namespace ImageSpiderApi.Controllers
                     string openId = responseData?.openId;
                     var resAccObj = await ise.Accounts.Where(w => w.OpenId == openId).FirstOrDefaultAsync();
                     DateTime currentTime = DateTime.Now;
+                    Account newAccObj = null;
+                    AccessRecord accessRecord = null;
                     if (resAccObj == null)
                     {
-                        Account newAccObj = new Account();
+                        newAccObj = new Account();
                         newAccObj.OpenId = openId;
                         newAccObj.UnionId = responseData.unionId;
                         newAccObj.NickName = responseData.nickName;
@@ -100,19 +102,23 @@ namespace ImageSpiderApi.Controllers
                         newAccObj.City = responseData.city;
                         newAccObj.AvatarUrl = responseData.avatarUrl;
                         newAccObj.RegistrationTime = currentTime;
-                        newAccObj.LatestLoginTime = currentTime;
-                        ise.Accounts.Add(newAccObj);
-                        await ise.SaveChangesAsync();
-                        AccessRecord accessRecord = new AccessRecord();
+                        ise.Accounts.Add(newAccObj);//添加新用户
+
+                        accessRecord = new AccessRecord();
                         accessRecord.OpenId = newAccObj.OpenId;
                         accessRecord.AccessTime = currentTime;
-                        ise.AccessRecords.Add(accessRecord);
-                        await ise.SaveChangesAsync();
+                        accessRecord.NickName = newAccObj.NickName;
+                        ise.AccessRecords.Add(accessRecord);//添加的访问记录
 
+                        await ise.SaveChangesAsync();
                     }
                     else
                     {
-                        resAccObj.LatestLoginTime = currentTime;
+                        accessRecord = new AccessRecord();
+                        accessRecord.OpenId = resAccObj.OpenId;
+                        accessRecord.AccessTime = currentTime;
+                        accessRecord.NickName = resAccObj.NickName;
+                        ise.AccessRecords.Add(accessRecord);
                         await ise.SaveChangesAsync();
                     }
                     return Ok(responseData);

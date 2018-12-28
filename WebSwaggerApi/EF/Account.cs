@@ -23,7 +23,6 @@ namespace ImageSpiderApi.EF
         public string Province { get; set; }
         public string City { get; set; }
         public string AvatarUrl { get; set; }
-        public Nullable<System.DateTime> LatestLoginTime { get; set; }
         public Nullable<System.DateTime> RegistrationTime { get; set; }
     }
 }

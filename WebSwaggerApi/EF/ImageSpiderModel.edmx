@@ -12,6 +12,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OpenId" Type="varchar" MaxLength="100" />
           <Property Name="AccessTime" Type="datetime" />
+          <Property Name="NickName" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Account">
           <Key>
@@ -27,7 +28,6 @@
           <Property Name="City" Type="varchar" MaxLength="255" />
           <Property Name="AvatarUrl" Type="varchar" MaxLength="255" />
           <Property Name="RegistrationTime" Type="datetime" />
-          <Property Name="LatestLoginTime" Type="datetime" />
         </EntityType>
         <EntityType Name="CatalogTable">
           <Key>
@@ -162,7 +162,6 @@
           <Property Name="Province" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="AvatarUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="LatestLoginTime" Type="DateTime" Precision="3" />
           <Property Name="RegistrationTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="AccessRecord">
@@ -172,6 +171,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OpenId" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="AccessTime" Type="DateTime" Precision="3" />
+          <Property Name="NickName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Collection">
           <Key>
@@ -234,7 +234,6 @@
             <EntityTypeMapping TypeName="ImageSpiderModel.Account">
               <MappingFragment StoreEntitySet="Account">
                 <ScalarProperty Name="RegistrationTime" ColumnName="RegistrationTime" />
-                <ScalarProperty Name="LatestLoginTime" ColumnName="LatestLoginTime" />
                 <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="Province" ColumnName="Province" />
@@ -250,6 +249,7 @@
           <EntitySetMapping Name="AccessRecords">
             <EntityTypeMapping TypeName="ImageSpiderModel.AccessRecord">
               <MappingFragment StoreEntitySet="AccessRecord">
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="AccessTime" ColumnName="AccessTime" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
