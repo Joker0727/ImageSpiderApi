@@ -19,6 +19,9 @@ namespace ImageSpiderApi.Controllers
     public class CatalogController : ApiController
     {
         private ImageSpiderEntities ise = null;
+        /// <summary>
+        /// 构造函数初始化
+        /// </summary>
         public CatalogController()
         {
             ise = new ImageSpiderEntities();
