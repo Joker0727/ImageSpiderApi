@@ -38,5 +38,17 @@ namespace ImageSpiderApi.Models
         /// 封面图片
         /// </summary>
         public string CoverUrl { get; set; }
+        /// <summary>
+        /// 是否已经收藏
+        /// </summary>
+        public bool IsCollection { get; set; }
+        /// <summary>
+        /// 浏览量
+        /// </summary>
+        public Nullable<int> BrowseCount { get; set; }
+        /// <summary>
+        /// 收藏量
+        /// </summary>
+        public Nullable<int> CollectionCount { get; set; }
     }
 }

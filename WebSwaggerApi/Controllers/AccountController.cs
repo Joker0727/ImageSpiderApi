@@ -108,8 +108,8 @@ namespace ImageSpiderApi.Controllers
                         accessRecord.OpenId = newAccObj.OpenId;
                         accessRecord.AccessTime = currentTime;
                         accessRecord.NickName = newAccObj.NickName;
+                        accessRecord.AccountId = newAccObj.Id;
                         ise.AccessRecords.Add(accessRecord);//添加的访问记录
-
                         await ise.SaveChangesAsync();
                     }
                     else
@@ -118,10 +118,11 @@ namespace ImageSpiderApi.Controllers
                         accessRecord.OpenId = resAccObj.OpenId;
                         accessRecord.AccessTime = currentTime;
                         accessRecord.NickName = resAccObj.NickName;
+                        accessRecord.AccountId = resAccObj.Id;
                         ise.AccessRecords.Add(accessRecord);
                         await ise.SaveChangesAsync();
                     }
-                    responseData.AccessRecordId = accessRecord.Id;
+                    responseData.AccountId = accessRecord.AccountId;
                     return Ok(responseData);
                 }
                 else
@@ -163,14 +164,14 @@ namespace ImageSpiderApi.Controllers
         /// 新增收藏记录
         /// </summary>
         /// <param name="accountId">用户的accountId</param>
-        /// <param name="imageId">图片的Id</param>
+        /// <param name="catalogId">图片的Id</param>
         /// <returns></returns>
         [HttpGet, Route("addcollectionrecord"), ResponseType(typeof(CollectionTable))]
-        public async Task<IHttpActionResult> AddCollectionRecord(int accountId, int imageId)
+        public async Task<IHttpActionResult> AddCollectionRecord(int accountId, int catalogId)
         {
             string message = string.Empty;
             AddCollectionRecordDto addCollectionRecordDto = null;
-            if (accountId * imageId < 0)
+            if (accountId * catalogId < 0)
             {
                 message = "参数不合法！";
                 return BadRequest(message);
@@ -180,7 +181,7 @@ namespace ImageSpiderApi.Controllers
                 CollectionTable collectionObj = new CollectionTable
                 {
                     AccountId = accountId,
-                    ImageId = imageId,
+                    CatalogId = catalogId,
                     CollectionTime = DateTime.Now
                 };
                 ise.CollectionTables.Add(collectionObj);
@@ -189,7 +190,7 @@ namespace ImageSpiderApi.Controllers
                 {
                     Id = collectionObj.Id,
                     AccountId = collectionObj.AccountId,
-                    ImageId = collectionObj.ImageId,
+                    ImageId = collectionObj.CatalogId,
                     CollectionTime = collectionObj.CollectionTime
                 };
             }
@@ -204,13 +205,13 @@ namespace ImageSpiderApi.Controllers
         /// 删除收藏的图片
         /// </summary>
         /// <param name="accountId">用户的accountId</param>
-        /// <param name="imageId">图片的Id</param>
+        /// <param name="catalogId">图片的Id</param>
         /// <returns></returns>
         [HttpGet, Route("deletecollectionrecord"), ResponseType(typeof(CollectionTable))]
-        public async Task<IHttpActionResult> DeleteCollectionRecord(int accountId, int imageId)
+        public async Task<IHttpActionResult> DeleteCollectionRecord(int accountId, int catalogId)
         {
             string message = string.Empty;
-            if (accountId * imageId < 0)
+            if (accountId * catalogId < 0)
             {
                 message = "参数不合法！";
                 return BadRequest(message);
@@ -218,9 +219,10 @@ namespace ImageSpiderApi.Controllers
             CollectionTable collectionObj = null;
             try
             {
-                collectionObj = await ise.CollectionTables.Where(w => w.AccountId == accountId && w.ImageId == imageId).FirstOrDefaultAsync();
+                collectionObj = await ise.CollectionTables.Where(w => w.AccountId == accountId && w.CatalogId == catalogId).FirstOrDefaultAsync();
                 if (collectionObj != null)
                     ise.CollectionTables.Remove(collectionObj);
+                await ise.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -228,6 +230,46 @@ namespace ImageSpiderApi.Controllers
                 return BadRequest(message);
             }
             return Ok(collectionObj);
+        }
+        /// <summary>
+        /// 新增浏览记录
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="catalogId"></param>
+        [HttpGet, Route("addbrowse"), ResponseType(typeof(AddBrowseDto))]
+        public async Task<IHttpActionResult> AddBrowse(int accountId, int catalogId)
+        {
+            string message = string.Empty;
+            AddBrowseDto addBrowseDto = null;
+            if (accountId * catalogId < 0)
+            {
+                message = "参数不合法！";
+                return BadRequest(message);
+            }
+            try
+            {
+                Browse browseObj = new Browse
+                {
+                    AccountId = accountId,
+                    CatalogId = catalogId,
+                    BrowseTime = DateTime.Now
+                };
+                ise.Browses.Add(browseObj);
+                await ise.SaveChangesAsync();
+                addBrowseDto = new AddBrowseDto
+                {
+                    Id = browseObj.Id,
+                    AccountId = browseObj.AccountId,
+                    CatalogId = browseObj.CatalogId,
+                    BrowseTime = browseObj.BrowseTime
+                };
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return BadRequest(message);
+            }
+            return Ok(addBrowseDto);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace ImageSpiderApi.EF
         {
             this.AccessRecords = new HashSet<AccessRecord>();
             this.CollectionTables = new HashSet<CollectionTable>();
+            this.CommentTables = new HashSet<CommentTable>();
+            this.Browses = new HashSet<Browse>();
         }
     
         public int Id { get; set; }
@@ -36,5 +38,9 @@ namespace ImageSpiderApi.EF
         public virtual ICollection<AccessRecord> AccessRecords { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionTable> CollectionTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CommentTable> CommentTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Browse> Browses { get; set; }
     }
 }

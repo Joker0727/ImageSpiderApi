@@ -47,8 +47,8 @@ namespace ImageSpiderApi.Models
         /// </summary>
         public string sessionKey { get; set; }
         /// <summary>
-        /// AccessRecordId
+        /// AccessId
         /// </summary>
-        public int AccessRecordId {get;set;}
+        public int? AccountId { get;set;}
     }
 }

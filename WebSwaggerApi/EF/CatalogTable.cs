@@ -17,7 +17,10 @@ namespace ImageSpiderApi.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CatalogTable()
         {
+            this.Classifications = new HashSet<Classification>();
+            this.CollectionTables = new HashSet<CollectionTable>();
             this.ImageTables = new HashSet<ImageTable>();
+            this.Browses = new HashSet<Browse>();
         }
     
         public int Id { get; set; }
@@ -28,6 +31,12 @@ namespace ImageSpiderApi.EF
         public Nullable<bool> IsDownLoad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Classification> Classifications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionTable> CollectionTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ImageTable> ImageTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Browse> Browses { get; set; }
     }
 }

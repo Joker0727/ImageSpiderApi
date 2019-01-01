@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ImageSpiderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ImageSpiderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccessRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -32,6 +32,15 @@
           <Property Name="AvatarUrl" Type="varchar" MaxLength="255" />
           <Property Name="RegistrationTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="Browse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountId" Type="int" />
+          <Property Name="CatalogId" Type="int" />
+          <Property Name="BrowseTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="CatalogTable">
           <Key>
             <PropertyRef Name="Id" />
@@ -43,21 +52,39 @@
           <Property Name="TotalImages" Type="int" />
           <Property Name="IsDownLoad" Type="bit" />
         </EntityType>
+        <EntityType Name="Classification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CatalogId" Type="int" />
+          <Property Name="ClassificationType" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="CollectionTable">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AccountId" Type="int" />
-          <Property Name="ImageId" Type="int" />
+          <Property Name="CatalogId" Type="int" />
           <Property Name="CollectionTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CommentTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AccountId" Type="int" />
+          <Property Name="NickName" Type="varchar" MaxLength="255" />
+          <Property Name="CommentMessage" Type="text" />
+          <Property Name="CommentaryTime" Type="datetime" />
         </EntityType>
         <EntityType Name="ImageTable">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Guid" Type="varchar" MaxLength="1" />
+          <Property Name="Guid" Type="varchar" MaxLength="255" />
           <Property Name="Alt" Type="varchar" MaxLength="255" />
           <Property Name="OriginalUrl" Type="varchar" MaxLength="255" />
           <Property Name="NewUrl" Type="varchar" MaxLength="255" />
@@ -68,6 +95,18 @@
           <Property Name="IsDownLoad" Type="bit" />
           <Property Name="DownLoadTime" Type="datetime" />
         </EntityType>
+        <Association Name="fk_accId">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Browse" Type="Self.Browse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Browse">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Fk_AccountId">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="CollectionTable" Type="Self.CollectionTable" Multiplicity="*" />
@@ -77,6 +116,42 @@
             </Principal>
             <Dependent Role="CollectionTable">
               <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_catalog">
+          <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
+          <End Role="Browse" Type="Self.Browse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Browse">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_AccountId">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="CommentTable" Type="Self.CommentTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentTable">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_CatalogId">
+          <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
+          <End Role="Classification" Type="Self.Classification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Classification">
+              <PropertyRef Name="CatalogId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -92,6 +167,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ForeignKey_Catalog">
+          <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
+          <End Role="CollectionTable" Type="Self.CollectionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionTable">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ForeignKey_CatalogId">
           <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
           <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="*" />
@@ -104,43 +191,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ForeignKey_ImageId">
-          <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="0..1" />
-          <End Role="CollectionTable" Type="Self.CollectionTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ImageTable">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionTable">
-              <PropertyRef Name="ImageId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="ImageSpiderModelStoreContainer">
           <EntitySet Name="AccessRecord" EntityType="Self.AccessRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Browse" EntityType="Self.Browse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogTable" EntityType="Self.CatalogTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Classification" EntityType="Self.Classification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionTable" EntityType="Self.CollectionTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentTable" EntityType="Self.CommentTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageTable" EntityType="Self.ImageTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_accId" Association="Self.fk_accId">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Browse" EntitySet="Browse" />
+          </AssociationSet>
           <AssociationSet Name="Fk_AccountId" Association="Self.Fk_AccountId">
             <End Role="Account" EntitySet="Account" />
             <End Role="CollectionTable" EntitySet="CollectionTable" />
+          </AssociationSet>
+          <AssociationSet Name="fk_catalog" Association="Self.fk_catalog">
+            <End Role="CatalogTable" EntitySet="CatalogTable" />
+            <End Role="Browse" EntitySet="Browse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_AccountId" Association="Self.FK_Comment_AccountId">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CommentTable" EntitySet="CommentTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_CatalogId" Association="Self.FK_Type_CatalogId">
+            <End Role="CatalogTable" EntitySet="CatalogTable" />
+            <End Role="Classification" EntitySet="Classification" />
           </AssociationSet>
           <AssociationSet Name="ForeignKey_AccountId" Association="Self.ForeignKey_AccountId">
             <End Role="Account" EntitySet="Account" />
             <End Role="AccessRecord" EntitySet="AccessRecord" />
           </AssociationSet>
+          <AssociationSet Name="ForeignKey_Catalog" Association="Self.ForeignKey_Catalog">
+            <End Role="CatalogTable" EntitySet="CatalogTable" />
+            <End Role="CollectionTable" EntitySet="CollectionTable" />
+          </AssociationSet>
           <AssociationSet Name="ForeignKey_CatalogId" Association="Self.ForeignKey_CatalogId">
             <End Role="CatalogTable" EntitySet="CatalogTable" />
             <End Role="ImageTable" EntitySet="ImageTable" />
           </AssociationSet>
-          <AssociationSet Name="ForeignKey_ImageId" Association="Self.ForeignKey_ImageId">
-            <End Role="ImageTable" EntitySet="ImageTable" />
-            <End Role="CollectionTable" EntitySet="CollectionTable" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ImageSpiderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -173,6 +266,8 @@
           <Property Name="RegistrationTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AccessRecords" Relationship="Self.ForeignKey_AccountId" FromRole="Account" ToRole="AccessRecord" />
           <NavigationProperty Name="CollectionTables" Relationship="Self.Fk_AccountId" FromRole="Account" ToRole="CollectionTable" />
+          <NavigationProperty Name="CommentTables" Relationship="Self.FK_Comment_AccountId" FromRole="Account" ToRole="CommentTable" />
+          <NavigationProperty Name="Browses" Relationship="ImageSpiderModel.fk_accId" FromRole="Account" ToRole="Browse" />
         </EntityType>
         <EntityType Name="CatalogTable">
           <Key>
@@ -184,7 +279,19 @@
           <Property Name="Describe" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TotalImages" Type="Int32" />
           <Property Name="IsDownLoad" Type="Boolean" />
+          <NavigationProperty Name="Classifications" Relationship="Self.FK_Type_CatalogId" FromRole="CatalogTable" ToRole="Classification" />
+          <NavigationProperty Name="CollectionTables" Relationship="Self.ForeignKey_Catalog" FromRole="CatalogTable" ToRole="CollectionTable" />
           <NavigationProperty Name="ImageTables" Relationship="Self.ForeignKey_CatalogId" FromRole="CatalogTable" ToRole="ImageTable" />
+          <NavigationProperty Name="Browses" Relationship="ImageSpiderModel.fk_catalog" FromRole="CatalogTable" ToRole="Browse" />
+        </EntityType>
+        <EntityType Name="Classification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CatalogId" Type="Int32" />
+          <Property Name="ClassificationType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CatalogTable" Relationship="Self.FK_Type_CatalogId" FromRole="Classification" ToRole="CatalogTable" />
         </EntityType>
         <EntityType Name="CollectionTable">
           <Key>
@@ -192,17 +299,28 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AccountId" Type="Int32" />
-          <Property Name="ImageId" Type="Int32" />
+          <Property Name="CatalogId" Type="Int32" />
           <Property Name="CollectionTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Account" Relationship="Self.Fk_AccountId" FromRole="CollectionTable" ToRole="Account" />
-          <NavigationProperty Name="ImageTable" Relationship="Self.ForeignKey_ImageId" FromRole="CollectionTable" ToRole="ImageTable" />
+          <NavigationProperty Name="CatalogTable" Relationship="Self.ForeignKey_Catalog" FromRole="CollectionTable" ToRole="CatalogTable" />
+        </EntityType>
+        <EntityType Name="CommentTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AccountId" Type="Int32" />
+          <Property Name="NickName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CommentMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CommentaryTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Comment_AccountId" FromRole="CommentTable" ToRole="Account" />
         </EntityType>
         <EntityType Name="ImageTable">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Guid" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Guid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Alt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="OriginalUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="NewUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -213,7 +331,6 @@
           <Property Name="IsDownLoad" Type="Boolean" />
           <Property Name="DownLoadTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CatalogTable" Relationship="Self.ForeignKey_CatalogId" FromRole="ImageTable" ToRole="CatalogTable" />
-          <NavigationProperty Name="CollectionTables" Relationship="Self.ForeignKey_ImageId" FromRole="ImageTable" ToRole="CollectionTable" />
         </EntityType>
         <Association Name="ForeignKey_AccountId">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
@@ -239,6 +356,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Comment_AccountId">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="CommentTable" Type="Self.CommentTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentTable">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_CatalogId">
+          <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
+          <End Role="Classification" Type="Self.Classification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Classification">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ForeignKey_Catalog">
+          <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
+          <End Role="CollectionTable" Type="Self.CollectionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionTable">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ForeignKey_CatalogId">
           <End Role="CatalogTable" Type="Self.CatalogTable" Multiplicity="0..1" />
           <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="*" />
@@ -251,23 +404,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ForeignKey_ImageId">
-          <End Role="ImageTable" Type="Self.ImageTable" Multiplicity="0..1" />
-          <End Role="CollectionTable" Type="Self.CollectionTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ImageTable">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionTable">
-              <PropertyRef Name="ImageId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="ImageSpiderEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AccessRecords" EntityType="Self.AccessRecord" />
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="CatalogTables" EntityType="Self.CatalogTable" />
+          <EntitySet Name="Classifications" EntityType="Self.Classification" />
           <EntitySet Name="CollectionTables" EntityType="Self.CollectionTable" />
+          <EntitySet Name="CommentTables" EntityType="Self.CommentTable" />
           <EntitySet Name="ImageTables" EntityType="Self.ImageTable" />
           <AssociationSet Name="ForeignKey_AccountId" Association="Self.ForeignKey_AccountId">
             <End Role="Account" EntitySet="Accounts" />
@@ -277,15 +420,67 @@
             <End Role="Account" EntitySet="Accounts" />
             <End Role="CollectionTable" EntitySet="CollectionTables" />
           </AssociationSet>
+          <AssociationSet Name="FK_Comment_AccountId" Association="Self.FK_Comment_AccountId">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CommentTable" EntitySet="CommentTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_CatalogId" Association="Self.FK_Type_CatalogId">
+            <End Role="CatalogTable" EntitySet="CatalogTables" />
+            <End Role="Classification" EntitySet="Classifications" />
+          </AssociationSet>
+          <AssociationSet Name="ForeignKey_Catalog" Association="Self.ForeignKey_Catalog">
+            <End Role="CatalogTable" EntitySet="CatalogTables" />
+            <End Role="CollectionTable" EntitySet="CollectionTables" />
+          </AssociationSet>
           <AssociationSet Name="ForeignKey_CatalogId" Association="Self.ForeignKey_CatalogId">
             <End Role="CatalogTable" EntitySet="CatalogTables" />
             <End Role="ImageTable" EntitySet="ImageTables" />
           </AssociationSet>
-          <AssociationSet Name="ForeignKey_ImageId" Association="Self.ForeignKey_ImageId">
-            <End Role="ImageTable" EntitySet="ImageTables" />
-            <End Role="CollectionTable" EntitySet="CollectionTables" />
+          <EntitySet Name="Browses" EntityType="ImageSpiderModel.Browse" />
+          <AssociationSet Name="fk_accId" Association="ImageSpiderModel.fk_accId">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Browse" EntitySet="Browses" />
+          </AssociationSet>
+          <AssociationSet Name="fk_catalog" Association="ImageSpiderModel.fk_catalog">
+            <End Role="CatalogTable" EntitySet="CatalogTables" />
+            <End Role="Browse" EntitySet="Browses" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Browse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int32" />
+          <Property Name="CatalogId" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="ImageSpiderModel.fk_accId" FromRole="Browse" ToRole="Account" />
+          <NavigationProperty Name="CatalogTable" Relationship="ImageSpiderModel.fk_catalog" FromRole="Browse" ToRole="CatalogTable" />
+          <Property Name="BrowseTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="fk_accId">
+          <End Type="ImageSpiderModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="ImageSpiderModel.Browse" Role="Browse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Browse">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_catalog">
+          <End Type="ImageSpiderModel.CatalogTable" Role="CatalogTable" Multiplicity="0..1" />
+          <End Type="ImageSpiderModel.Browse" Role="Browse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Browse">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -333,13 +528,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Classifications">
+            <EntityTypeMapping TypeName="ImageSpiderModel.Classification">
+              <MappingFragment StoreEntitySet="Classification">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
+                <ScalarProperty Name="ClassificationType" ColumnName="ClassificationType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CollectionTables">
             <EntityTypeMapping TypeName="ImageSpiderModel.CollectionTable">
               <MappingFragment StoreEntitySet="CollectionTable">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
                 <ScalarProperty Name="CollectionTime" ColumnName="CollectionTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentTables">
+            <EntityTypeMapping TypeName="ImageSpiderModel.CommentTable">
+              <MappingFragment StoreEntitySet="CommentTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="CommentMessage" ColumnName="CommentMessage" />
+                <ScalarProperty Name="CommentaryTime" ColumnName="CommentaryTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -357,6 +572,16 @@
                 <ScalarProperty Name="WebSiteUrl" ColumnName="WebSiteUrl" />
                 <ScalarProperty Name="IsDownLoad" ColumnName="IsDownLoad" />
                 <ScalarProperty Name="DownLoadTime" ColumnName="DownLoadTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Browses">
+            <EntityTypeMapping TypeName="ImageSpiderModel.Browse">
+              <MappingFragment StoreEntitySet="Browse">
+                <ScalarProperty Name="BrowseTime" ColumnName="BrowseTime" />
+                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

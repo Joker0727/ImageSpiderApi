@@ -4,16 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a5ccf0c499aa4710a6197c48e497523f" Name="Diagram1">
-        <EntityTypeShape EntityType="ImageSpiderModel.AccessRecord" Width="1.5" PointX="4.5" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ImageSpiderModel.Account" Width="1.5" PointX="0.625" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ImageSpiderModel.CatalogTable" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ImageSpiderModel.CollectionTable" Width="1.5" PointX="7.875" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ImageSpiderModel.ImageTable" Width="1.5" PointX="4.375" PointY="0.875" IsExpanded="true" />
+      <Diagram DiagramId="983e592ed9f44695883779e677236c25" Name="Diagram1">
+        <EntityTypeShape EntityType="ImageSpiderModel.AccessRecord" Width="1.5" PointX="6" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageSpiderModel.Account" Width="1.5" PointX="3.75" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageSpiderModel.CatalogTable" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageSpiderModel.Classification" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageSpiderModel.CollectionTable" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageSpiderModel.CommentTable" Width="1.5" PointX="6" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageSpiderModel.ImageTable" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
         <AssociationConnector Association="ImageSpiderModel.ForeignKey_AccountId" ManuallyRouted="false" />
         <AssociationConnector Association="ImageSpiderModel.Fk_AccountId" ManuallyRouted="false" />
+        <AssociationConnector Association="ImageSpiderModel.FK_Comment_AccountId" ManuallyRouted="false" />
+        <AssociationConnector Association="ImageSpiderModel.FK_Type_CatalogId" ManuallyRouted="false" />
+        <AssociationConnector Association="ImageSpiderModel.ForeignKey_Catalog" ManuallyRouted="false" />
         <AssociationConnector Association="ImageSpiderModel.ForeignKey_CatalogId" ManuallyRouted="false" />
-        <AssociationConnector Association="ImageSpiderModel.ForeignKey_ImageId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ImageSpiderModel.Browse" Width="1.5" PointX="6" PointY="8.375" />
+        <AssociationConnector Association="ImageSpiderModel.fk_accId" />
+        <AssociationConnector Association="ImageSpiderModel.fk_catalog" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

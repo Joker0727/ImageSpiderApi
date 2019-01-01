@@ -29,16 +29,17 @@ namespace ImageSpiderApi.Controllers
         /// <summary>
         /// 获取目录
         /// </summary>
+        /// <param name="accId">用户accId</param>
         /// <param name="page">第几页</param>
         /// <param name="count">每页的数量</param>
         /// <returns></returns>
         [HttpPost, Route("getcatalog"), ResponseType(typeof(GetCatalogDto))]
-        public async Task<IHttpActionResult> GetCatalogAsync(int page = 1, int count = 6)
+        public async Task<IHttpActionResult> GetCatalogAsync(int accId, int page = 1, int count = 10)
         {
             if (page < 1)
                 return BadRequest("页数不能小于1！");
             if (count < 6)
-                return BadRequest("每页图片数不能小于6！");
+                return BadRequest("每页图片数不能小于10！");
             List<GetCatalogDto> catalogList = new List<GetCatalogDto>();
             try
             {
@@ -58,7 +59,11 @@ namespace ImageSpiderApi.Controllers
                                 CoverUrl = ise.ImageTables.Where(w => w.CatalogId == s.Id).Select(e => new
                                 {
                                     e.NewUrl
-                                }).FirstOrDefault().NewUrl.ToString()
+                                }).FirstOrDefault().NewUrl.ToString(),
+                                IsCollection = ise.CollectionTables.Where(w => w.CatalogId == s.Id & w.AccountId == accId)
+                               .ToList().Count() > 0 ? true : false,
+                                BrowseCount = ise.Browses.Where(w => w.CatalogId == s.Id).ToList().Count(),
+                                CollectionCount = ise.CollectionTables.Where(w => w.CatalogId == s.Id).ToList().Count()
                             }).ToListAsync();
             }
             catch (Exception ex)
@@ -75,7 +80,7 @@ namespace ImageSpiderApi.Controllers
         /// <param name="count">每页图片数</param>
         /// <returns></returns>
         [HttpPost, Route("getimage"), ResponseType(typeof(GetImageDto))]
-        public async Task<IHttpActionResult> GetImage(int catalogId, int page, int count = 6)
+        public async Task<IHttpActionResult> GetImage(int catalogId, int page, int count = 10)
         {
             if (catalogId < 0)
                 return BadRequest("目录Id不合法");

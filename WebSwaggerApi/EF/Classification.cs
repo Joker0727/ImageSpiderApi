@@ -12,19 +12,11 @@ namespace ImageSpiderApi.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class ImageTable
+    public partial class Classification
     {
         public int Id { get; set; }
-        public string Guid { get; set; }
-        public string Alt { get; set; }
-        public string OriginalUrl { get; set; }
-        public string NewUrl { get; set; }
-        public Nullable<double> Width { get; set; }
-        public Nullable<double> Height { get; set; }
         public Nullable<int> CatalogId { get; set; }
-        public string WebSiteUrl { get; set; }
-        public Nullable<bool> IsDownLoad { get; set; }
-        public Nullable<System.DateTime> DownLoadTime { get; set; }
+        public string ClassificationType { get; set; }
     
         public virtual CatalogTable CatalogTable { get; set; }
     }
