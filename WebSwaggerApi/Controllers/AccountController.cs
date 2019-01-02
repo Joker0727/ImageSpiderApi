@@ -188,7 +188,7 @@ namespace ImageSpiderApi.Controllers
                 {
                     Id = collectionObj.Id,
                     AccountId = collectionObj.AccountId,
-                    ImageId = collectionObj.CatalogId,
+                    CatalogId = collectionObj.CatalogId,
                     CollectionTime = collectionObj.CollectionTime
                 };
             }

@@ -21,7 +21,7 @@ namespace ImageSpiderApi.Models
         /// <summary>
         /// 图片的Id
         /// </summary>
-        public Nullable<int> ImageId { get; set; }
+        public Nullable<int> CatalogId { get; set; }
         /// <summary>
         /// 收藏时间
         /// </summary>
