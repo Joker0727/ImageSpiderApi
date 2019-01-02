@@ -24,7 +24,9 @@ namespace ImageSpiderApi.Controllers
     public class AccountController : ApiController
     {
         private ImageSpiderEntities ise = null;
-
+        /// <summary>
+        /// 构造函数初始化
+        /// </summary>
         public AccountController()
         {
             ise = new ImageSpiderEntities();
@@ -105,9 +107,7 @@ namespace ImageSpiderApi.Controllers
                         ise.Accounts.Add(newAccObj);//添加新用户
 
                         accessRecord = new AccessRecord();
-                        accessRecord.OpenId = newAccObj.OpenId;
                         accessRecord.AccessTime = currentTime;
-                        accessRecord.NickName = newAccObj.NickName;
                         accessRecord.AccountId = newAccObj.Id;
                         ise.AccessRecords.Add(accessRecord);//添加的访问记录
                         await ise.SaveChangesAsync();
@@ -115,9 +115,7 @@ namespace ImageSpiderApi.Controllers
                     else
                     {
                         accessRecord = new AccessRecord();
-                        accessRecord.OpenId = resAccObj.OpenId;
                         accessRecord.AccessTime = currentTime;
-                        accessRecord.NickName = resAccObj.NickName;
                         accessRecord.AccountId = resAccObj.Id;
                         ise.AccessRecords.Add(accessRecord);
                         await ise.SaveChangesAsync();

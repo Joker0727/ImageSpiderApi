@@ -15,8 +15,6 @@ namespace ImageSpiderApi.EF
     public partial class AccessRecord
     {
         public int Id { get; set; }
-        public string OpenId { get; set; }
-        public string NickName { get; set; }
         public Nullable<System.DateTime> AccessTime { get; set; }
         public Nullable<System.DateTime> ExitTime { get; set; }
         public Nullable<double> StayTime { get; set; }

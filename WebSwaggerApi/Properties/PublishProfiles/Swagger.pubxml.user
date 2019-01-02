@@ -6,11 +6,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\16107\Desktop\123</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\16107\Desktop\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>02/22/2013 08:43:40</publishTime>
@@ -19,13 +19,13 @@
       <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>12/28/2018 19:18:00</publishTime>
+      <publishTime>01/02/2019 16:07:00</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>12/28/2018 19:18:00</publishTime>
+      <publishTime>01/02/2019 16:07:00</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>10/23/2017 13:15:18</publishTime>
@@ -34,10 +34,10 @@
       <publishTime>10/23/2017 13:15:20</publishTime>
     </File>
     <File Include="bin/ImageSpiderApi.dll">
-      <publishTime>12/28/2018 19:17:49</publishTime>
+      <publishTime>01/02/2019 16:06:50</publishTime>
     </File>
     <File Include="bin/ImageSpiderApi.pdb">
-      <publishTime>12/28/2018 19:17:49</publishTime>
+      <publishTime>01/02/2019 16:06:50</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/07/2015 19:04:38</publishTime>
@@ -181,97 +181,97 @@
       <publishTime>01/28/2015 04:04:32</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="EF/ImageSpider.edmx.diagram">
-      <publishTime>12/28/2018 19:01:11</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="EF/ImageSpiderModel.edmx.diagram">
       <publishTime>12/24/2018 14:45:54</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.svg">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.ttf">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>03/08/2018 17:27:50</publishTime>
     </File>
     <File Include="Index.html">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>12/28/2018 19:17:51</publishTime>
+      <publishTime>01/02/2019 16:06:53</publishTime>
     </File>
     <File Include="scripts/ai.0.22.9-build00167.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/ai.0.22.9-build00167.min.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/bootstrap.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/bootstrap.min.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery-1.10.2.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery-1.10.2.min.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery-1.10.2.min.map">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery.validate.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery.validate.min.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery.validate.unobtrusive.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/jquery.validate.unobtrusive.min.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="scripts/modernizr-2.6.2.js">
-      <publishTime>12/14/2018 19:15:06</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Views/web.config">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
-      <publishTime>12/14/2018 19:15:05</publishTime>
+      <publishTime>01/02/2019 15:10:15</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/28/2018 19:17:50</publishTime>
+      <publishTime>01/02/2019 16:06:51</publishTime>
     </File>
   </ItemGroup>
 </Project>

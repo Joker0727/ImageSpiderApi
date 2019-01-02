@@ -10,8 +10,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OpenId" Type="varchar" MaxLength="255" />
-          <Property Name="NickName" Type="varchar" MaxLength="255" />
           <Property Name="AccessTime" Type="datetime" />
           <Property Name="ExitTime" Type="datetime" />
           <Property Name="StayTime" Type="float" />
@@ -242,8 +240,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OpenId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="NickName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="AccessTime" Type="DateTime" Precision="3" />
           <Property Name="ExitTime" Type="DateTime" Precision="3" />
           <Property Name="StayTime" Type="Double" />
@@ -310,7 +306,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="AccountId" Type="Int32" />
-          <Property Name="NickName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NickName" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
           <Property Name="CommentMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CommentaryTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Comment_AccountId" FromRole="CommentTable" ToRole="Account" />
@@ -491,8 +487,6 @@
             <EntityTypeMapping TypeName="ImageSpiderModel.AccessRecord">
               <MappingFragment StoreEntitySet="AccessRecord">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-                <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="AccessTime" ColumnName="AccessTime" />
                 <ScalarProperty Name="ExitTime" ColumnName="ExitTime" />
                 <ScalarProperty Name="StayTime" ColumnName="StayTime" />
